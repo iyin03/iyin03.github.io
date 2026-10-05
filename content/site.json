@@ -1,0 +1,43 @@
+{
+  "name": "Iris Yin",
+  "name_zh": "尹紫鸢",
+  "name_zh_pinyin": "Yǐn Zǐyuān",
+  "name_zh_gloss": "Zǐyuān means purple iris.",
+  "url": "https://iyin03.github.io",
+  "description": "Iris Yin studies Statistics and Machine Learning at Carnegie Mellon, with a minor in Human-Computer Interaction. Her portfolio covers machine learning, speech and HCI work.",
+  "tagline": "Statistics & Machine Learning at Carnegie Mellon, minor in Human-Computer Interaction.",
+  "intro": "Hi, I’m Iris. I build AI systems, from speech models to tools people use every day. Off the keyboard, I practice Chinese calligraphy, make art, and dance.",
+  "email": "iyin@andrew.cmu.edu",
+  "email_personal": "irisyin06@gmail.com",
+  "github": "https://github.com/iyin03",
+  "linkedin": "https://www.linkedin.com/in/iris-yin-28a490280",
+  "resume": "/Iris_Yin_Resume.pdf",
+  "resume_updated": "October 2026",
+  "about": [
+    "I’m a junior at Carnegie Mellon (graduating May 2028), studying Statistics and Machine Learning with a minor in Human-Computer Interaction.",
+    "My work splits between those two fields. At Poseidon.ai I fine-tuned speech models and built retrieval agents. In the HCII Spud Lab I build an iOS app for a behavioral study and code interview transcripts to understand how people build security habits. I want a model’s numbers to hold up, and I want the people using it to be able to make sense of what it produces."
+  ],
+  "skills": [
+    {
+      "label": "Modeling",
+      "items": "PyTorch, Hugging Face Transformers, LoRA fine-tuning, scikit-learn, XGBoost, Weights & Biases"
+    },
+    {
+      "label": "Data and statistics",
+      "items": "Python, R, SQL, pandas, tidytext, hypothesis testing, evaluation and benchmarking pipelines"
+    },
+    {
+      "label": "LLM systems",
+      "items": "Agent architecture, MCP tool integration, hybrid RAG (vector search + BM25 with reciprocal rank fusion)"
+    },
+    {
+      "label": "Infrastructure",
+      "items": "AWS (EC2, IAM, Secrets Manager), Docker, Kubernetes, Terraform, GitHub Actions"
+    },
+    {
+      "label": "Research and design",
+      "items": "Swift and SwiftUI, Figma, user interviews, qualitative coding, usability testing"
+    }
+  ],
+  "coursework": "Introduction to Deep Learning; Methods of Statistics and Data Science (R); Data Structures and Algorithms (C); Fundamentals of Programming (Python)"
+}

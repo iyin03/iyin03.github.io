@@ -1,0 +1,52 @@
+{
+  "work": {
+    "src": "/img/art/banana.webp",
+    "width": 707,
+    "height": 1100,
+    "title": "Banana Plants",
+    "artist": "Min Zhen",
+    "date": "1788",
+    "url": "https://clevelandart.org/art/1985.71.11",
+    "alt": "Ink painting of banana plants with broad, wet leaves"
+  },
+  "projects": {
+    "src": "/img/art/peaches.webp",
+    "width": 702,
+    "height": 1100,
+    "title": "Peaches",
+    "artist": "Min Zhen",
+    "date": "1788",
+    "url": "https://clevelandart.org/art/1985.71.9",
+    "alt": "Ink painting of peaches hanging from a leafy branch"
+  },
+  "about": {
+    "src": "/img/art/bamboo.webp",
+    "width": 596,
+    "height": 1100,
+    "title": "Bamboo and Rock",
+    "artist": "Zheng Xie",
+    "date": "1765",
+    "url": "https://clevelandart.org/art/1982.54",
+    "alt": "Ink painting of bamboo beside a tall rock, with a calligraphy inscription"
+  },
+  "resume": {
+    "src": "/img/art/plum.webp",
+    "width": 496,
+    "height": 1100,
+    "title": "Plum Blossoms",
+    "artist": "Wang Shishen",
+    "date": "probably 1739",
+    "url": "https://clevelandart.org/art/1985.366",
+    "alt": "Ink painting of a flowering plum branch surrounded by calligraphy inscriptions"
+  },
+  "contact": {
+    "src": "/img/art/eagle.webp",
+    "width": 355,
+    "height": 1100,
+    "title": "Eagle on a Tree Trunk",
+    "artist": "Huang Shen",
+    "date": "1755",
+    "url": "https://clevelandart.org/art/1977.31",
+    "alt": "Ink painting of an eagle perched on a tall tree trunk, with a calligraphy inscription"
+  }
+}

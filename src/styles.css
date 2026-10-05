@@ -1,0 +1,665 @@
+/* Xuan paper, ink, one seal. See DESIGN.md for the reasoning behind each token. */
+
+:root {
+  --paper: #DAD9CD;
+  --ink: #161714;
+  --ink-body: #2B2D28;
+  --ink-grey: #4F5249;
+  --seal: #B3362B;
+
+  --text: "Alegreya Sans", "Gill Sans", "Segoe UI", system-ui, sans-serif;
+  --brush: "Ma Shan Zheng", "STKaiti", "KaiTi", serif;
+
+  /* Classical scale: 14 / 16 / 18 / 21 / 24 / 36 / 48 */
+  --fs-small: 0.875rem;
+  --fs-meta: 1rem;
+  --fs-body: 1.125rem;
+  --fs-lede: 1.3125rem;
+  --fs-h3: 1.5rem;
+  --fs-h1: 2.25rem;
+  --fs-name: 3rem;
+
+  --gutter: clamp(1rem, 5vw, 4rem);
+  --rail: 4.5rem;
+  --measure: 40rem;
+
+  /* A dry-brush stroke: full ink, and a faint wash of it. */
+  --stroke-ink: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 24' preserveAspectRatio='none'%3E%3Cpath d='M3 14C60 9 160 7 260 8C320 8.5 370 9 396 7.5C398 9 396 12 390 13C330 15 240 15.5 150 16.5C90 17 40 18 6 19C2 18 1 16 3 14Z' fill='%23161714' fill-opacity='1'/%3E%3C/svg%3E");
+  --stroke-wash: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 24' preserveAspectRatio='none'%3E%3Cpath d='M3 14C60 9 160 7 260 8C320 8.5 370 9 396 7.5C398 9 396 12 390 13C330 15 240 15.5 150 16.5C90 17 40 18 6 19C2 18 1 16 3 14Z' fill='%23161714' fill-opacity='0.28'/%3E%3C/svg%3E");
+
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  background: var(--paper) url("/img/paper.webp") repeat;
+  background-size: 512px 512px;
+  color: var(--ink-body);
+  font-family: var(--text);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 { color: var(--ink); font-weight: 500; margin: 0; text-wrap: balance; }
+p, ul, dl { margin: 0; }
+img, svg { display: block; }
+
+a {
+  color: var(--ink);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgb(22 23 20 / 0.4);
+  text-underline-offset: 0.2em;
+}
+a:hover { text-decoration-thickness: 2px; text-decoration-color: var(--ink); }
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+::selection { background: var(--ink); color: var(--paper); }
+
+a, button { touch-action: manipulation; }
+
+.quiet { color: var(--ink-grey); }
+
+.skip {
+  position: absolute;
+  left: var(--gutter);
+  top: -4rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--ink);
+  color: var(--paper);
+  z-index: 10;
+}
+.skip:focus { top: 0.75rem; }
+
+/* ---------------------------------------------------------------- header */
+
+.site-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem 2rem;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 1.5rem var(--gutter);
+}
+.wordmark {
+  font-weight: 500;
+  text-decoration: none;
+}
+.site-header ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.75rem;
+  list-style: none;
+  padding: 0;
+}
+.site-header-home { justify-content: flex-end; }
+/* Padding grows each link's hit area to about 44px without moving the layout. */
+.site-header nav a {
+  display: inline-block;
+  padding: 0.75rem 0.25rem;
+  margin: -0.75rem -0.25rem;
+  text-decoration: none;
+}
+.site-header nav a:hover,
+.site-header nav a[aria-current] {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.35em;
+}
+.site-header nav a:not([aria-current]):hover { text-decoration-thickness: 1px; }
+
+/* ---------------------------------------------------------------- hero */
+
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 36rem) clamp(3rem, 9vw, 9rem) auto 1fr;
+  grid-template-areas:
+    "name    . brush ."
+    "tagline . brush ."
+    "rest    . brush .";
+  grid-template-rows: 1fr auto 1fr;
+  column-gap: 2rem;
+  max-width: 80rem;
+  /* Short enough that the Work section starts in the first screen. */
+  margin: 0 auto;
+  padding: 0.5rem var(--gutter) 1rem;
+}
+.hero > * { position: relative; z-index: 1; }
+
+.hero-name {
+  grid-area: name;
+  align-self: end;
+  font-size: var(--fs-name);
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+}
+.hero-tagline {
+  grid-area: tagline;
+  margin-top: 0.75rem;
+  font-size: var(--fs-lede);
+  line-height: 1.4;
+  color: var(--ink);
+  max-width: 30rem;
+}
+.hero-rest {
+  grid-area: rest;
+  align-self: start;
+  max-width: 36rem;
+}
+.hero-intro { margin-top: 1.5rem; }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin-top: 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.6rem 1.1rem 0.65rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 500;
+  text-decoration: none;
+}
+.button:hover { background: var(--ink-body); color: var(--paper); }
+
+/* The brush column: the one bold element on the page. */
+.brush {
+  grid-area: brush;
+  position: relative;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+}
+.brush-svg {
+  height: clamp(22rem, 56vh, 38rem);
+  width: auto;
+  overflow: visible;
+}
+.brush-svg .ink,
+.brush-svg .settle { fill: var(--ink); }
+/* Ink spreading into the fibers: a wide, faint stroke around each glyph. */
+.brush-svg .bleed {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 9;
+  stroke-linejoin: round;
+  opacity: 0.16;
+}
+.brush-svg .stroke {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 130;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.signature {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  margin-top: 1rem;
+  max-width: 17rem;
+}
+.seal { flex: none; width: 3.25rem; height: 3.25rem; }
+.gloss {
+  font-size: var(--fs-small);
+  line-height: 1.45;
+  /* Full ink: the gloss sits in the fog, where lighter inks drop below 4.5:1. */
+  color: var(--ink);
+}
+
+/* Iris's ink painting of irises (紫鸢, her name), as the second sheet behind
+   the brush column. The paper was whitened out of the scan, so multiply leaves
+   only the ink on the site's paper. */
+.hero-art {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  right: calc(var(--gutter) * -0.5);
+  height: min(96%, 52rem);
+  width: auto;
+  transform: translateY(-50%);
+  mix-blend-mode: multiply;
+  opacity: 0.42;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Vanta fog as an ink wash behind the hero. Multiply keeps the paper texture
+   showing through; the mask keeps the text side of the hero nearly clear.
+   Started by motion.js on wide screens only, after the name is written. */
+.ink-fog {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transition: opacity 2.4s ease-out;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 15%, rgb(0 0 0 / 0.45) 45%, #000 70%);
+  mask-image: linear-gradient(to right, transparent 15%, rgb(0 0 0 / 0.45) 45%, #000 70%);
+}
+.ink-fog.is-on { opacity: 0.85; }
+.ink-fog canvas { display: block; }
+
+/* Write-on: the strokes start hidden only when motion is welcome and JS is
+   running, so no-JS and reduced-motion visitors see the finished name. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .brush-svg .stroke { opacity: 0; stroke-dasharray: 1 2; stroke-dashoffset: 1; }
+  .js .brush-svg:not(.writing):not(.written) use { opacity: 0; }
+  .js .brush-svg:not(.written) .settle { opacity: 0; }
+  .js .seal:not(.pressed) { opacity: 0; }
+}
+
+/* ---------------------------------------------------------------- sections */
+
+.section {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  column-gap: clamp(1rem, 4vw, 3rem);
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: clamp(4rem, 9vw, 7rem) var(--gutter) 0;
+}
+
+
+.marker {
+  position: sticky;
+  top: 2rem;
+  align-self: start;
+  justify-self: center;
+  writing-mode: vertical-rl;
+  font-family: var(--brush);
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: 0.15em;
+  color: var(--ink-grey);
+}
+
+.marker .mk { display: inline-block; }
+
+.page-title {
+  font-size: var(--fs-name);
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+  margin-bottom: 2.5rem;
+}
+
+.prose { max-width: var(--measure); }
+.prose p + p { margin-top: 1rem; }
+.prose h3,
+.prose .sub {
+  margin: 2.5rem 0 0.75rem;
+  font-size: var(--fs-body);
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------- work */
+
+.entries { display: grid; gap: clamp(3rem, 6vw, 4.5rem); }
+
+.entry {
+  display: grid;
+  grid-template-columns: minmax(0, var(--measure)) minmax(10rem, 15rem);
+  column-gap: clamp(2rem, 5vw, 4rem);
+}
+
+.entry-name {
+  font-size: var(--fs-h3);
+  line-height: 1.3;
+}
+/* Project names carry a faint brush stroke; on hover or focus a full-ink
+   stroke is drawn across it, left to right, like a brush pulled through. */
+.entry-name a,
+.next-name a {
+  text-decoration: none;
+  padding-bottom: 0.3em;
+  background-image: var(--stroke-ink), var(--stroke-wash);
+  background-repeat: no-repeat;
+  background-position: 0 100%, 0 100%;
+  background-size: 0% 0.42em, 100% 0.42em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size 0.55s cubic-bezier(0.35, 0, 0.25, 1);
+}
+.entry-name a:hover,
+.entry-name a:focus-visible,
+.next-name a:hover,
+.next-name a:focus-visible { background-size: 100% 0.42em, 100% 0.42em; }
+
+/* The result, right under the name, so skimmers still see it first. */
+.entry-outcome {
+  margin-top: 0.375rem;
+  font-size: var(--fs-lede);
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.entry-summary { margin-top: 0.625rem; }
+
+.facts {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr);
+  gap: 0.25rem 1rem;
+  margin-top: 1rem;
+  font-size: var(--fs-meta);
+  line-height: 1.5;
+}
+.facts dt { color: var(--ink-grey); }
+.facts dd { margin: 0; }
+.facts-wide { grid-template-columns: 9.5rem minmax(0, 1fr); gap: 0.5rem 1.25rem; }
+
+.entry-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding-top: 0.3rem;
+  font-size: var(--fs-meta);
+  line-height: 1.4;
+}
+.entry-org { font-weight: 700; color: var(--ink); }
+
+/* ---------------------------------------------------------------- contact, detail */
+
+.contact-email {
+  font-size: var(--fs-h3);
+  margin: 0.25rem 0 0.75rem;
+}
+.contact-email + .quiet { margin-top: 0; }
+.contact-email { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; }
+.copy {
+  font: inherit;
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  color: var(--ink);
+  background: none;
+  border: 1px solid rgb(22 23 20 / 0.4);
+  padding: 0.45rem 0.8rem;
+  cursor: pointer;
+}
+.copy:hover { border-color: var(--ink); background: rgb(22 23 20 / 0.06); }
+.copy-status {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-top: 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.detail,
+.page-section { padding-top: clamp(2rem, 5vw, 4rem); }
+
+/* Section pages: rail, content, and a painting that stays in view. */
+.page-section {
+  grid-template-columns: var(--rail) minmax(0, 1fr) minmax(12rem, 19rem);
+}
+/* The painting is part of the sheet, not an object on it: fixed to the
+   bottom-right corner, bleeding off the edges, dissolving into the paper toward
+   the content. The third grid column stays empty, so it passes behind blank
+   paper rather than text. */
+.page-art {
+  position: fixed;
+  z-index: 0;
+  right: 0;
+  bottom: -4vh;
+  height: 96vh;
+  width: auto;
+  opacity: 0.5;
+  pointer-events: none;
+  user-select: none;
+  /* Transparency and the fade are baked into the image (tools/make_art.py), so
+     no blend or mask runs here: the layer sits on the GPU and scrolling only
+     moves pixels instead of recomputing a blend every frame. */
+  will-change: transform;
+  transform: translateZ(0);
+}
+.page-section .section-body,
+.page-section .marker { position: relative; z-index: 1; }
+.site-footer { position: relative; z-index: 1; }
+
+/* With the painting beside them, entries put organization and dates above the name. */
+.page-section .entry { grid-template-columns: minmax(0, 1fr); }
+.page-section .entry-meta {
+  order: -1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0 0.75rem;
+  padding: 0 0 0.5rem;
+  font-size: var(--fs-small);
+}
+
+/* Every page fills at least the screen, so the footer sits at the bottom. */
+body {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+.site-header,
+.site-footer { width: 100%; }
+main { flex: 1; }
+/* Home is one screen: the hero fills what the header and footer leave. */
+.home main { display: flex; }
+.home .brush-svg { height: clamp(22rem, 64vh, 44rem); }
+.home .hero { flex: 1; width: 100%; align-content: center; }
+.home .site-footer { padding-top: 1.5rem; }
+
+/* Resume page: the PDF itself, on screens wide enough to read it. */
+.resume-preview {
+  display: block;
+  width: 100%;
+  aspect-ratio: 8.5 / 11;
+  margin-top: 2.5rem;
+  background: #fff;
+  outline: 1px solid rgb(22 23 20 / 0.18);
+}
+.back { font-size: var(--fs-meta); margin-bottom: 1.5rem; }
+.detail-name {
+  font-size: var(--fs-name);
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+}
+.detail-result {
+  margin-top: 0.875rem;
+  max-width: 34rem;
+  font-size: var(--fs-h3);
+  line-height: 1.35;
+  color: var(--ink);
+}
+.lede {
+  margin-top: 1rem;
+  line-height: 1.6;
+}
+
+/* End of a project page: a short brush mark, then the next project as a
+   large link, so a reader always has somewhere to go. */
+.next { margin-top: 4.5rem; }
+.next::before {
+  content: "";
+  display: block;
+  width: 5.5rem;
+  height: 0.6rem;
+  margin-bottom: 1.75rem;
+  background: var(--stroke-ink) no-repeat 0 0 / 100% 100%;
+}
+.next-label { font-size: var(--fs-meta); color: var(--ink-grey); }
+.next-name {
+  margin-top: 0.25rem;
+  font-size: var(--fs-h1);
+  line-height: 1.2;
+  font-weight: 500;
+}
+.next-result { margin-top: 0.5rem; max-width: 34rem; }
+.detail-contact {
+  margin-top: 3rem;
+  font-size: var(--fs-meta);
+  color: var(--ink-grey);
+}
+.detail .facts { margin: 2rem 0 0.5rem; }
+.detail .section-body h2 {
+  margin: 2.75rem 0 0.75rem;
+  font-size: var(--fs-lede);
+}
+
+/* Artifacts run wider than the text column. Multiply lets the charts' white
+   ground take on the paper, so they sit on the sheet rather than on top of it. */
+.artifact {
+  width: min(60rem, calc(100vw - 2 * var(--gutter) - var(--rail) - clamp(1rem, 4vw, 3rem)));
+  margin: 2.5rem 0;
+}
+.artifact a { display: block; }
+.artifact img {
+  width: 100%;
+  height: auto;
+  mix-blend-mode: multiply;
+}
+/* App screenshots have their own colors; frame them instead of blending. */
+.artifact-screenshot { max-width: 46rem; }
+.artifact-screenshot img {
+  mix-blend-mode: normal;
+  outline: 1px solid rgb(22 23 20 / 0.18);
+}
+/* Several app panels in one image, separated by transparent gaps: no frame. */
+.artifact-panels img { mix-blend-mode: normal; }
+.artifact figcaption {
+  max-width: var(--measure);
+  margin-top: 0.75rem;
+  font-size: var(--fs-meta);
+  line-height: 1.5;
+  color: var(--ink-grey);
+}
+
+/* ---------------------------------------------------------------- footer */
+
+.site-footer {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: clamp(5rem, 10vw, 8rem) var(--gutter) 2.5rem;
+  font-size: var(--fs-small);
+  color: var(--ink-grey);
+}
+
+/* ---------------------------------------------------------------- narrow screens */
+
+@media (max-width: 60rem) {
+  .entry { grid-template-columns: minmax(0, 1fr); }
+  .entry-meta {
+    order: -1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0 0.75rem;
+    padding: 0 0 0.5rem;
+    font-size: var(--fs-small);
+  }
+  .hero { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name brush" "tagline brush" "rest brush"; }
+}
+
+@media (max-width: 75rem) {
+  /* Below 1200px the fixed painting can reach under the text, so it is fainter
+     and small grey labels use the darker body ink, keeping 4.5:1 or better
+     over the darkest strokes. */
+  .page-art { opacity: 0.25; }
+  .page-section { --ink-grey: var(--ink-body); }
+}
+
+@media (max-width: 60rem) {
+  .page-section { grid-template-columns: var(--rail) minmax(0, 1fr); }
+  .page-art { height: 78vh; }
+}
+
+@media (max-width: 40rem) {
+  .page-section { grid-template-columns: minmax(0, 1fr); }
+  .page-art { height: 62vh; opacity: 0.22; }
+  :root { --fs-name: 2.25rem; --fs-h1: 1.75rem; }
+
+  .site-header { padding-top: 1rem; }
+  .site-header ul { gap: 0.25rem 1.25rem; }
+
+  /* The column stays vertical, smaller, top-right; the rest of the hero
+     runs full width beneath it. */
+  .hero {
+    min-height: 0;
+    column-gap: 1rem;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "name    brush"
+      "tagline brush"
+      "rest    rest";
+    padding-top: 1.5rem;
+  }
+  .hero-name { align-self: start; padding-top: 0.5rem; }
+  .hero-tagline { align-self: start; }
+  .brush { justify-content: flex-start; }
+  .brush-svg,
+  .home .brush-svg { height: clamp(15rem, 62vw, 19rem); }
+  .signature { flex-direction: column; align-items: flex-end; margin-top: 0.5rem; max-width: none; }
+  .seal { width: 2.5rem; height: 2.5rem; }
+  .gloss { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .hero-art { opacity: 0.22; height: 70%; top: 58%; right: -2.5rem; }
+
+  /* Section markers turn horizontal and sit above the heading. */
+  .section { grid-template-columns: minmax(0, 1fr); }
+  .marker {
+    position: static;
+    justify-self: start;
+    writing-mode: horizontal-tb;
+    font-size: 1.5rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
+  }
+
+  .facts, .facts-wide { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .artifact { width: 100%; }
+  .resume-preview { display: none; }
+  .facts dd + dt { margin-top: 0.5rem; }
+}
+
+/* Lenis handles smoothing when it runs; native smooth scrolling would fight it. */
+/* Lenis does the smoothing when it runs; native smooth scrolling would fight it. */
+html.lenis { scroll-behavior: auto; }
+
+/* Anchor jumps land with a little room above the heading. */
+.section { scroll-margin-top: 1rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .entry-name a, .next-name a { transition: none; }
+}

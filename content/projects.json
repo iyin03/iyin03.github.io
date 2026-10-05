@@ -1,0 +1,333 @@
+[
+  {
+    "slug": "poseidon-ai",
+    "section": "work",
+    "title": "Poseidon.ai",
+    "kind": "Internship",
+    "org": "Palo Alto, CA",
+    "role": "AI engineering intern",
+    "dates": "May to Aug 2026",
+    "outcome": "Cut word error rate on Hindi speech from 68.5% to 17.8%, and shipped a Slack agent that answers engineers’ questions about the codebase",
+    "summary": "Fine-tuned OpenAI’s Whisper-medium speech recognizer for the company’s Hindi recordings, built a codebase Q&A assistant in Slack, and cut deployment time by 40%.",
+    "methods": "LoRA fine-tuning, held-out evaluation on 2,334 recordings, hybrid retrieval (vector search + BM25, merged with reciprocal rank fusion), agent architecture, MCP tool integration",
+    "stack": "Python, PyTorch, Hugging Face Transformers, Weights & Biases, GPT-4o mini, Hermes Agent framework, AWS (EC2, IAM, Secrets Manager), Terraform, Docker, Kubernetes, GitHub Actions",
+    "links": [],
+    "sections": [
+      {
+        "heading": "Hindi speech recognition",
+        "paragraphs": [
+          "Whisper-medium supports Hindi, but on the company’s recordings, which sound different from what it was trained on, it got about two of every three words wrong.",
+          "I fine-tuned Whisper-medium with LoRA (low-rank adaptation) on a company-owned Hindi speech corpus, which trains a small set of added weights instead of the full model.",
+          "I evaluated on 2,334 held-out recordings the model never saw in training. I measured word error rate per recording, so a few easy files couldn’t hide regressions on hard ones.",
+          "Word error rate improved on 95.8% of the 2,334 held-out recordings, with a median gain of about 50 points. Across the test set, word error rate fell from 68.5% to 17.8%.",
+          "I also designed the architecture diagrams for the project’s launch blog. I tested A/B versions until one was chosen for release, and I co-authored the VANI blog post."
+        ]
+      },
+      {
+        "heading": "Slack codebase Q&A agent",
+        "paragraphs": [
+          "Engineers ask the agent questions in Slack. It retrieves the most relevant parts of the codebase and answers from them.",
+          "I built the agent on the Hermes Agent framework and deployed it on AWS EC2 with no open inbound ports. Retrieval combines vector search, which catches meaning, with BM25 keyword search, which catches exact identifiers, and merges the two rankings with reciprocal rank fusion.",
+          "I also deployed and debugged services on the company’s Kubernetes cluster, and led feature releases through feature complete, code freeze, beta, internal dogfooding and release candidate."
+        ]
+      },
+      {
+        "heading": "Other work that summer",
+        "paragraphs": [
+          "I built containerized CI/CD pipelines with GitHub Actions and Docker, then optimized image builds and runner infrastructure to cut deployment time by 40% and remove manual configuration errors.",
+          "I owned and redesigned an engineering activity platform for a 26-engineer organization (Java backend for PR processing, JavaScript frontend). I replaced its raw Markdown feeds with structured HTML digests, which leadership praised."
+        ]
+      }
+    ],
+    "website": {
+      "label": "psdn.ai",
+      "url": "https://www.psdn.ai/"
+    }
+  },
+  {
+    "slug": "adulting101",
+    "section": "work",
+    "title": "Adulting101",
+    "kind": "Research",
+    "org": "CMU Human-Computer Interaction Institute, Spud Lab",
+    "role": "Undergraduate researcher (SURA)",
+    "dates": "Jan 2026 to present",
+    "outcome": "Built the iOS app for a study of how people form cybersecurity habits, and coded the study’s interviews",
+    "summary": "A research app that frames security advice as everyday “adulting” skills, and tests whether people stick with it alone or with an accountability partner.",
+    "methods": "Behavioral study (solo vs. paired-accountability conditions), semi-structured interviews, qualitative coding",
+    "stack": "Swift, SwiftUI, Xcode, JavaScript",
+    "links": [],
+    "sections": [
+      {
+        "heading": "What it is",
+        "paragraphs": [
+          "Adulting101 presents cybersecurity advice alongside general life skills, as part of becoming a capable adult. The study tests whether people build lasting habits when they practice alone or with a partner who holds them accountable."
+        ]
+      },
+      {
+        "heading": "What I did",
+        "paragraphs": [
+          "I built the iOS frontend in Swift and SwiftUI, including the avatar and celebration-illustration system shared across every study condition, and integrated an asset catalog of more than 1,000 images (688 image sets covering skin-tone, overlay and mirrored variants).",
+          "I helped run the user studies and did qualitative coding of the interview transcripts. The coding sorts what participants said into themes the team can compare across conditions."
+        ]
+      },
+      {
+        "heading": "Outcome",
+        "paragraphs": [
+          "The app runs the study across all conditions."
+        ]
+      }
+    ],
+    "website": {
+      "label": "Spud Lab",
+      "url": "https://cmu-spuds.github.io/"
+    }
+  },
+  {
+    "slug": "phoneme-recognition",
+    "section": "projects",
+    "title": "Phoneme recognition from scratch",
+    "kind": "Course project",
+    "org": "CMU 11-785 Introduction to Deep Learning",
+    "role": "Sole developer",
+    "dates": "Aug to Sep 2026",
+    "outcome": "Scored 87.2% phoneme accuracy on the class Kaggle test set with a plain MLP, after writing backpropagation from scratch in NumPy",
+    "summary": "A model that listens to short slices of recorded English speech and labels which of 40 speech sounds (phonemes) is being spoken.",
+    "methods": "Hand-derived backpropagation, batch normalization, MLP architecture search, frequency and time masking, learning-rate scheduling",
+    "stack": "Python, NumPy, PyTorch, Weights & Biases, Kaggle",
+    "links": [],
+    "sections": [
+      {
+        "heading": "Part 1: a deep learning library in NumPy",
+        "paragraphs": [
+          "Before using PyTorch, I wrote the pieces it provides myself, with no automatic differentiation: linear layers; sigmoid, tanh, ReLU, GELU, Swish and softmax activations; mean squared error and cross-entropy losses; SGD with momentum; and batch normalization.",
+          "Each component has a forward pass and a hand-derived backward pass. I chained them into networks with 0, 1 and 4 hidden layers, and an autograder checked every output and gradient against PyTorch."
+        ]
+      },
+      {
+        "heading": "Part 2: frame-level speech recognition",
+        "paragraphs": [
+          "The task was a class Kaggle competition: label every frame of a log-mel spectrogram (32 features per frame) with one of 40 phonemes, using read English audiobooks from LibriSpeech. The rules allowed only multilayer perceptrons: no convolutions, recurrence, attention or pretrained weights, and at most 20 million parameters.",
+          "I gave the model each frame together with 40 frames of context on either side, 2,592 inputs in all. The network is a six-layer “diamond” that widens from 960 to 1,856 units and narrows back, each layer using batch normalization, GELU and dropout, for 13.9 million parameters.",
+          "I trained on 33.6 million frames with AdamW and a batch size of 2,048, using a scheduler that lowered the learning rate when validation accuracy stalled. I added frequency and time masking on the spectrograms to help the model generalize, and tracked runs in Weights & Biases."
+        ]
+      },
+      {
+        "heading": "Outcome",
+        "paragraphs": [
+          "The model scored 87.21% on the competition’s hidden test set. Its accuracy on 1.8 million held-out validation frames was also 87.21%."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "emotion-classifier",
+    "section": "projects",
+    "title": "Emotion classifier",
+    "kind": "Personal project",
+    "org": "Independent",
+    "role": "Sole developer",
+    "dates": "Sep 2026",
+    "outcome": "Reached 0.92 macro-F1 classifying six emotions in tweets, up from a 0.09 baseline",
+    "summary": "A fine-tuned language model that reads a short post and labels the emotion behind it: sadness, joy, love, anger, fear or surprise.",
+    "methods": "Transformer fine-tuning, macro-F1 evaluation, adversarial testing, per-class error analysis",
+    "stack": "Python, PyTorch, Hugging Face Transformers",
+    "links": [],
+    "sections": [
+      {
+        "heading": "What it is",
+        "paragraphs": [
+          "I fine-tuned DistilBERT on 16,000 tweets labeled with one of six emotions."
+        ]
+      },
+      {
+        "heading": "What I did",
+        "paragraphs": [
+          "I chose macro-F1 as the headline metric so rare emotions count as much as common ones; accuracy alone would reward a model that mostly predicts joy.",
+          "I stress-tested the model with sarcasm, negation and sentences about other people’s emotions, then traced per-class errors, such as love being confused with joy, to class imbalance and noisy hashtag-derived labels."
+        ]
+      },
+      {
+        "heading": "Outcome",
+        "paragraphs": [
+          "On validation the model reached 0.92 macro-F1 and 94% accuracy. A model that always predicts the most common class scores 0.09 macro-F1."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "fetoscope",
+    "section": "projects",
+    "title": "FetoScope",
+    "kind": "Hackathon",
+    "org": "ScottyLabs NOVA Hackathon",
+    "role": "Model tuning lead, team of four",
+    "dates": "Nov 2025",
+    "outcome": "Nominated for first place with a model that predicts fetal health at 94.6% accuracy and explains each prediction",
+    "summary": "A dashboard that predicts fetal health as normal, suspect or pathological from cardiotocography (CTG) readings, then explains each prediction in plain language.",
+    "methods": "Gradient-boosted trees, random hyperparameter search, SHAP explanations, LLM-written explanations, robustness evaluation",
+    "stack": "Python, XGBoost, scikit-learn, SHAP, Claude API",
+    "links": [],
+    "sections": [
+      {
+        "heading": "What it is",
+        "paragraphs": [
+          "Cardiotocography (CTG) records a fetus’s heart rate alongside the mother’s contractions during pregnancy. Its summary statistics are hard to read at a glance. FetoScope takes 21 CTG measurements and classifies fetal health as normal, suspect or pathological.",
+          "We trained on the SisPorto CTG dataset (Ayres de Campos et al., 2000), which has more than 2,000 labeled recordings."
+        ]
+      },
+      {
+        "heading": "How it works",
+        "paragraphs": [
+          "An XGBoost classifier makes the prediction. SHAP values then show which readings pushed it toward that class, and Claude turns those SHAP values into a plain-language explanation of the result."
+        ],
+        "figures": [
+          {
+            "src": "/img/fetoscope/shap-summary.webp",
+            "width": 1605,
+            "height": 569,
+            "alt": "SHAP summary plot ranking ten CTG features by their impact on the model’s output. Percentage of time with abnormal long-term variability and histogram number of peaks have the widest spread of SHAP values; histogram max and min have almost none.",
+            "caption": "Which readings drive the model. Each dot is one recording; the share of time with abnormal long-term variability and the number of histogram peaks move predictions the most."
+          }
+        ]
+      },
+      {
+        "heading": "What I did",
+        "paragraphs": [
+          "I led hyperparameter tuning for our XGBoost model using random search, and evaluated how robust the model would be under real clinical deployment constraints. Tuning raised accuracy from 83% to 94.6% on 426 held-out recordings, and caught 91% of pathological cases.",
+          "We presented the technical findings to a panel of engineering judges."
+        ],
+        "figures": [
+          {
+            "src": "/img/fetoscope/dashboard-stats.webp",
+            "width": 2128,
+            "height": 975,
+            "kind": "screenshot",
+            "alt": "FetoScope dashboard. Left: an input table of CTG features such as baseline value, accelerations and fetal movement, with a Run analysis button. Right: model statistics, a three-class confusion matrix and a precision, recall and F1 table over 426 test recordings.",
+            "caption": "The dashboard: enter CTG readings on the left, and the right panel reports how the model performs on 426 held-out recordings, class by class."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "reddit-text-mining",
+    "section": "projects",
+    "title": "Reddit text mining",
+    "kind": "Project",
+    "org": "Carnegie Mellon",
+    "role": "Analyst",
+    "dates": "Oct 2025",
+    "outcome": "Found 95% overlap in men’s and women’s relationship concerns across 10,000 Reddit posts",
+    "summary": "A text analysis of posts from a relationship-advice forum, testing whether men and women write about different problems.",
+    "methods": "Tokenization, stemming, TF-IDF, proportion-based hypothesis tests",
+    "stack": "R, tidytext",
+    "links": [],
+    "sections": [
+      {
+        "heading": "What I did",
+        "paragraphs": [
+          "I built a preprocessing pipeline in R (tokenization, stemming, stopword removal and TF-IDF weighting) to surface the themes in each post.",
+          "I formulated three hypotheses about gender differences and tested each with a proportion-based hypothesis test."
+        ]
+      },
+      {
+        "heading": "Outcome",
+        "paragraphs": [
+          "Men and women shared 95% of the relationship themes in the posts."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "outfit-planner",
+    "section": "projects",
+    "title": "Outfit planner",
+    "kind": "Project",
+    "org": "Carnegie Mellon",
+    "role": "Designer and developer",
+    "dates": "Oct to Dec 2024",
+    "outcome": "Raised user satisfaction 25% across 20 testers by iterating on an outfit recommender’s interface",
+    "summary": "A desktop app that suggests what to wear from your own wardrobe, based on the weather, the occasion and which colors go together.",
+    "methods": "Custom scoring algorithm, Figma prototyping, usability feedback sessions",
+    "stack": "Python, CMU Graphics, rembg",
+    "links": [
+      {
+        "label": "Watch the demo video",
+        "url": "https://www.youtube.com/watch?v=_1V1im0sS1w"
+      }
+    ],
+    "sections": [
+      {
+        "heading": "What I did",
+        "paragraphs": [
+          "I wrote a matching algorithm in Python that scores clothing pairings on weather, occasion and color harmony, generating recommendations from a 30-item wardrobe.",
+          "I designed the full interface from Figma wireframes to a high-fidelity prototype to the Python build, including drag-and-drop uploads with automatic background removal."
+        ],
+        "figures": [
+          {
+            "src": "/img/outfit-planner/generate-outfit.webp",
+            "width": 1342,
+            "height": 941,
+            "kind": "screenshot",
+            "alt": "Generate Outfit screen showing four suggested outfits built from the user’s own clothes, each a top above a pair of pants, with an Add to outfits button and a thumbs-down button under each, and a Regenerate button.",
+            "caption": "Suggested outfits from my own wardrobe. Each one can be saved or rejected, and Regenerate asks for a new set."
+          },
+          {
+            "src": "/img/outfit-planner/wardrobe.webp",
+            "width": 1337,
+            "height": 930,
+            "kind": "screenshot",
+            "alt": "Wardrobe screen with an Items tab showing a grid of eight clothing photos, sweaters, a T-shirt and jeans, each cut out from its background.",
+            "caption": "The wardrobe. Each item is a photo dragged into the app, with the background removed automatically."
+          },
+          {
+            "src": "/img/outfit-planner/item-details.webp",
+            "width": 1696,
+            "height": 546,
+            "kind": "panels",
+            "alt": "Two steps of adding a clothing item: a color picker with fourteen color swatches that allows multiple selections, and a fit picker with Baggy, Tight and Well-fit options.",
+            "caption": "Adding an item: the app asks for its colors and fit. The colors feed the color-harmony score when pairing clothes."
+          }
+        ]
+      },
+      {
+        "heading": "Outcome",
+        "paragraphs": [
+          "I ran usability feedback sessions with 20 testers, iterated on the interface and added calendar integration for planning and saving outfits. Satisfaction scores rose 25%."
+        ],
+        "figures": [
+          {
+            "src": "/img/outfit-planner/calendar.webp",
+            "width": 1297,
+            "height": 921,
+            "kind": "screenshot",
+            "alt": "December 2024 calendar with outfit thumbnails placed on the 5th, 7th, 8th and 13th.",
+            "caption": "The calendar, for planning outfits ahead of time and keeping the ones you’ve saved."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "job-application-tool",
+    "section": "projects",
+    "draft": true,
+    "title": "Job application tool",
+    "kind": "Personal project",
+    "org": "Independent",
+    "role": "Sole developer",
+    "dates": "[Dates]",
+    "outcome": "[Lead with what it changed, e.g. “Cut the time to tailor an application from X to Y minutes”]",
+    "summary": "[One plain sentence: what it does and who it’s for.]",
+    "methods": "[Methods]",
+    "stack": "[Stack]",
+    "links": [
+      {
+        "label": "Source on GitHub",
+        "url": "https://github.com/iyin03/[repo]"
+      }
+    ],
+    "sections": []
+  }
+]
